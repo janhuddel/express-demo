@@ -1,4 +1,4 @@
-name: Node.js CI
+name: build and publish
 
 on: [push]
 
@@ -8,15 +8,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js
+      - name: install node-dependencies
         uses: actions/setup-node@v2
         with:
           node-version: 14.x
           cache: "npm"
       - run: npm ci
-      - name: Login to Registry
+      - name: login to docker registry
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin registry.rohwer.sh
-      - name: Build Docker image
+      - name: build docker image
         run: docker build . --file Dockerfile --tag registry.rohwer.sh/express-demo
-      - name: Push Docker image
+      - name: push docker image
         run: docker push registry.rohwer.sh/express-demo
