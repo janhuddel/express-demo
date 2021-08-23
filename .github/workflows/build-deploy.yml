@@ -17,6 +17,6 @@ jobs:
       - name: login to docker registry
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin registry.rohwer.sh
       - name: build docker image
-        run: docker build . --file Dockerfile --tag registry.rohwer.sh/express-demo
+        run: docker build . --file Dockerfile --tag registry.rohwer.sh/express-demo:latest
       - name: push docker image
-        run: docker push registry.rohwer.sh/express-demo
+        run: docker push registry.rohwer.sh/express-demo:latest
