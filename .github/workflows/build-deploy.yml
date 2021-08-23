@@ -27,8 +27,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
-      - name: Deploy docker container webhook
+      - name: Webhook
         uses: joelwmale/webhook-action@master
-        env:
-          WEBHOOK_URL: https://webhook.rohwer.sh/hooks/redeploy
-          data: "{ 'myField': 'myFieldValue'}"
+        with:
+          url: https://webhook.rohwer.sh/hooks/redeploy
+          headers: '{"repository": "joelwmale/webhook-action"}'
+          body: '{"event": "deployment", "repository": "joelwmale/webhook-action"}'
