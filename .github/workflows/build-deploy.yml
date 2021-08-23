@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   build:
+    name: test, build and push
     runs-on: ubuntu-latest
 
     steps:
@@ -20,3 +21,14 @@ jobs:
         run: docker build . --file Dockerfile --tag registry.rohwer.sh/express-demo:latest
       - name: push docker image
         run: docker push registry.rohwer.sh/express-demo:latest
+
+  redeploy:
+    name: Redeploy webhook call
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Deploy docker container webhook
+        uses: joelwmale/webhook-action@master
+        env:
+          WEBHOOK_URL: https://webhook.rohwer.sh
+          data: "{ 'myField': 'myFieldValue'}"
